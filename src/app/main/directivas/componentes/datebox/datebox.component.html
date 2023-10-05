@@ -1,0 +1,12 @@
+<div class={{clases}} style={{estilosPrincial}}>
+    <label  style={{estilosLabel}}>{{nombre}}</label>
+    <input 
+        id={{id}}
+        name="txt_fecha" 
+        type="date"                      
+        class="form-control" 
+        [(ngModel)]="element"
+        style={{estilosComponente}}
+        (change)="capturar(id,$event)"
+    >
+</div>

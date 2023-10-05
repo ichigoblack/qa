@@ -1,0 +1,249 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <section id="ngx-datatable-kitchen-sink">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title" style="text-align: center">Monitor Transaccional</h4>
+          <div class="row">
+            <div class="col-md-6 col-12 row">
+              <div class="col-6">
+                <label class="mr-1" style="width: 100%;font-weight: bold;">Fecha Inicio</label>
+                <input 
+                    type="date"
+                    id="txt_fecha"                       
+                    class="form-control" 
+                    style="width: 100%;"
+                    [ngModel]='fechaActual | date:"yyyy-MM-dd" '
+                    (change)="capturar($event)"
+                >
+              </div> 
+              <div class="col-6">
+                <label class="mr-1" style="width: 100%;font-weight: bold">Fecha Fin</label>
+                <input 
+                    type="date"
+                    id="txt_fecha_f"                       
+                    class="form-control" 
+                    style="width: 100%;"
+                    [ngModel]='fechaActualFin | date:"yyyy-MM-dd" '
+                    (change)="capturarFin($event)"
+                >
+              </div>
+            </div>
+            <div class="col-md-6 col-12 row"> 
+              <div class="col-6">
+                <label class="mr-1" style="width: 100%;font-weight: bold;">Integraciones</label>
+                <select class="form-control" [(ngModel)]="intSelectedOption" (change)="changeTipoIntegracion()">
+                  <option value=""></option>
+                  <option 
+                      *ngFor="let item of listaTipoIntegracion"
+                      value={{item.codintegracion}}
+                  >{{item.descripcion}}
+                  </option>
+                </select>
+              </div> 
+              <div class="col-6">
+                <label class="mr-1" style="width: 100%;font-weight: bold;">Estado</label>
+                <select class="form-control" [(ngModel)]="estadoSelectedOption" (change)="changeEstado()">
+                  <option value="-1"></option>
+                  <option value="0" id="colorpr">Procesando</option>
+                  <option value="1" id="colorok">Finalizado</option>
+                  <option value="2" id="colorer">Error</option>
+                </select>
+              </div> 
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-5 col-12">
+              <div class="d-flex justify-content-between align-items-center m-1">
+                <label class="d-flex align-items-center">Show
+                  <select class="form-control mx-25" [(ngModel)]="basicSelectedOption">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                  entries</label>
+              </div>
+            </div>
+            <div class="col-md-6 col-12 d-flex justify-content-md-end">
+              <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                <label class="d-flex align-items-center">Search
+                  <input type="search" placeholder="Search"
+                    [(ngModel)]="buscar"
+                    class="form-control ml-25" (keyup)="filterUpdate($event)" 
+                    (search)="filterUpdate($event)" /></label>
+              </div>
+            </div>
+            <div class="col-md-1 col-12 d-flex justify-content-md-end">
+              <div class="col" style="display: flex;justify-content: flex-end;align-items: center;">
+                <button 
+                  ngbTooltip="Refrescar"
+                  (click)="recargar()"  
+                  class="btn btn-primary fa fa-refresh" 
+                  style="width: 30px;display: flex;justify-content: center;"
+                >
+                </button> 
+              </div>
+            </div>
+          </div>
+          <ngx-datatable 
+            [rows]="kitchenSinkRows" 
+            [rowHeight]="58" 
+            class="bootstrap core-bootstrap" 
+            [limit]="10"
+            [columnMode]="ColumnMode.force" 
+            [headerHeight]="40" 
+            [footerHeight]="50" 
+            [scrollbarH]="true"
+            [limit]="basicSelectedOption" 
+          >
+            <ngx-datatable-column name="Hora Envió" prop="horaEnvio" [width]="150" [sortable]="false">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Id Integr." prop="id_integracion" [width]="150" [sortable]="false">
+            </ngx-datatable-column>
+            <ngx-datatable-column cssClass="text-justify" name="Desc. Proceso." prop="descripcion_proceso" [width]="250" [sortable]="false">
+              <!--<ng-template ngx-datatable-cell-template let-value="value">
+                {{value}}
+              </ng-template>-->
+            </ngx-datatable-column>
+            <ngx-datatable-column  id="proceso" name="Proceso" prop="descripcion_integracion" [width]="250" [sortable]="false">
+              <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                {{row.descripcion_integracion}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column  id="mandante" name="Descripcion" prop="mandante" [width]="210" [sortable]="false">
+              <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                {{row.mandante}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Estado" prop="estado" [width]="75" [sortable]="false">
+              <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                <div 
+                  role="status" 
+                  *ngIf="row.estado == 0"
+                  class="spinner-border text-warning"
+                >
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <div 
+                  class="icon-wrapper"
+                  *ngIf="row.estado == 1"
+                  style="color: rgb(40, 197, 67);"
+                >
+                  <i data-feather="check" [size]="24" ></i>
+                </div>
+                <div 
+                  class="icon-wrapper"
+                  *ngIf="row.estado == 2"
+                  style="color: rgb(218, 57, 71);"
+                >
+                  <i data-feather="x" [size]="24" ></i>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Respuesta" prop="respuesta" [width]="85" [sortable]="false">
+              <ng-template  let-row="row" ngx-datatable-cell-template>
+                <div *ngIf="row.estado == 0">
+                  esperando
+                </div>
+                <div *ngIf="row.estado == 1">
+                  
+                  <!--{{row.respuesta}}-->
+                  <div *ngIf="!isArray(row.respuesta)">
+                    {{ 
+                      row.respuesta
+                    }}
+                  </div>
+                  <div 
+                      *ngIf="isArray(row.respuesta)"
+                      (click)="modalOpenLG(modalLG,row.respuesta)"
+                      class="d-flex align-items-center" 
+                      style="color: rgb(109, 102, 90);"
+                  >
+                    <i data-feather="eye" class="cursor-pointer" [size]="24"></i>
+                    <ng-template #modalLG let-modal>
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel160">Mensaje Respuesta</h5>
+                        <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body" tabindex="0" ngbAutofocus>
+                        <ngx-datatable 
+                          [rows]="menTemp"  
+                          class="bootstrap core-bootstrap" 
+                          [limit]="10"
+                          [columnMode]="ColumnMode.force" 
+                          [headerHeight]="40" 
+                          [footerHeight]="50" 
+                          [scrollbarH]="true"
+                          [limit]="basicSelectedOption" 
+                        >
+                          <ngx-datatable-column *ngFor="let col of cabe; let i = index" [name]="col">
+                            <ng-template ngx-datatable-header-template>
+                              {{ col }}
+                            </ng-template>
+                            <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                              <div>
+                                {{ 
+                                  nameColumna(row,col) 
+                                }}
+                              </div>
+                            </ng-template>
+                          </ngx-datatable-column>
+                        </ngx-datatable>
+                      </div>
+                    </ng-template>
+                  </div>
+                </div>
+                <div 
+                  *ngIf="row.estado == 2"
+                  (click)="modalOpenLG(modalLG,row.respuesta)"
+                  class="d-flex align-items-center" 
+                  style="color: rgb(109, 102, 90);" 
+                >
+                  <i data-feather="eye" class="cursor-pointer" [size]="24"></i>
+                  <ng-template #modalLG let-modal>
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="myModalLabel160">Mensaje Respuesta</h5>
+                      <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body" tabindex="0" ngbAutofocus>
+                      <ngx-datatable 
+                        [rows]="menTemp"  
+                        class="bootstrap core-bootstrap" 
+                        [limit]="10"
+                        [columnMode]="ColumnMode.force" 
+                        [headerHeight]="40" 
+                        [footerHeight]="50" 
+                        [scrollbarH]="true"
+                        [limit]="basicSelectedOption" 
+                      >
+                        <ngx-datatable-column *ngFor="let col of cabe; let i = index" [name]="col">
+                          <ng-template ngx-datatable-header-template>
+                            {{ col }}
+                          </ng-template>
+                          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                            <div>
+                              {{ 
+                                nameColumna(row,col) 
+                              }}
+                            </div>
+                          </ng-template>
+                        </ngx-datatable-column>
+                      </ngx-datatable>
+                    </div>
+                  </ng-template>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="Hora Resp." prop="horaRespuesta" [width]="160" [sortable]="false">
+            </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

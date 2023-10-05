@@ -1,0 +1,48 @@
+<ng-template [ngIf]="visible">
+    <div class={{clases}} style={{estilosPrincial}}>
+        <label style={{estilosLabel}}>{{nombre}}</label>
+        <div class="input-group input-group-merge">
+            <input 
+                id={{id}}
+                type={{tipo}}
+                placeholder={{holder}} 
+                class="form-control" 
+                [readonly]="estado"
+                [(ngModel)]="valor"
+                style={{estilosComponente}}
+                (change)="capturar(id,$event)"
+            >
+            <!---->
+            <ng-template [ngIf]="nomenclatura">
+                <div class="input-group-append">
+                    <span class="input-group-text" style="background-color: #d8d6de;">{{nomenclatura}}</span>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+    <!--
+         <div class="col">
+
+                                <div class="input-group input-group-merge">
+
+                                    <input #tempCoccion class="form-control" placeholder="°C 85-95" maxlength="3"
+
+                                        id="txt_temperatura_coccion" name="txt_temperatura_coccion"
+
+                                        [(ngModel)]="cocinaDetalle.temperatura_coccion" type="number"
+
+                                        [disabled]="bloque" onKeyPress="if(this.value.length==5) return false;"
+
+                                        (ngModelChange)="validarRango($event, 0 ,120 )">
+
+                                    <div class="input-group-append">
+
+                                        <span class="input-group-text">°C</span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+    -->
+</ng-template>

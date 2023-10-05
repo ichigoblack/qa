@@ -1,0 +1,64 @@
+@import '@core/scss/angular/libs/datatables.component.scss';
+
+.datatable-scroll {
+  width: auto !important;
+}
+
+.ngx-datatable.bootstrap.core-bootstrap .datatable-header .datatable-header-cell-template-wrap {
+  display: flex;
+  align-items: center;
+  letter-spacing: 1px;
+  justify-content: center;
+}
+
+.ngx-datatable.fixed-row .datatable-scroll .datatable-body-row .datatable-body-cell, .ngx-datatable.fixed-row .datatable-scroll .datatable-body-row .datatable-body-group-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  justify-content: center;
+}
+
+.ngx-datatable .datatable-header .datatable-header-cell .sort-btn {
+  //cursor: pointer;
+  //display: inline-block;
+  //line-height: 100%;
+  //vertical-align: middle;
+  display: none !important;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items {
+  box-sizing: border-box;
+  display: block;
+  height: auto;
+  max-height: 240px;
+  overflow-y: auto;
+  background-color: white;
+  margin-top: 11px;
+  margin-left: -14px;
+  border: 1px solid #d8d3e9;
+  border-radius: 4px;
+}
+
+.stop{
+  animation: spin 0s linear infinite;
+}
+
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
+ 
+.spinner:before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  //margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  border-top-color: #000000;
+  animation: spinner .8s linear infinite;
+}

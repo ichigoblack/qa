@@ -1,0 +1,18 @@
+<ng-template [ngIf]="visible">
+    <div class={{clases}} style={{estilosPrincial}} >
+        <label  style={{estilosLabel}}>{{nombre}}</label>
+        <ng-select 
+            id={{id}}    
+            class="form-control" 
+            bindLabel="descripcion"
+            [(ngModel)]="element" 
+            [items]="listaElement" 
+            style={{estilosComponente}}
+            (change)="capturar(id)"
+        >
+            <!--<ng-template ng-option-tmp ng-label-tmp let-item="item">
+                <span class="ng-value-label"> {{item.descripcion}} </span>
+            </ng-template>-->
+        </ng-select>
+    </div>
+</ng-template>

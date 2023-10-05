@@ -1,0 +1,165 @@
+<div class="content-body">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title" style="text-align: center"> {{titulo}}</h4>
+            <ng-container *ngIf="itemsFabricacion.length>0">
+                <app-orden-fabricacion-directiva [ads]="itemsFabricacion">
+                </app-orden-fabricacion-directiva>
+                <ngx-datatable 
+                    [limit]="10" [rowHeight]="65" 
+                    [scrollbarH]="true" [scrollbarW]="true" [footerHeight]="50"
+                    [rows]="cajonesEnviarArray" style="width: 100%;" 
+                    class="bootstrap core-bootstrap" 
+                    [columnMode]="ColumnMode.force"
+                    style="margin-top: 10px;padding: 15px;"
+                >
+                    <ngx-datatable-column name="Area" prop="area"> </ngx-datatable-column>
+                    <ngx-datatable-column name="Número Cajon" prop="num_cajon"> </ngx-datatable-column>
+                    <ngx-datatable-column name="Peso" prop="peso_sub_producto"> </ngx-datatable-column>
+                    <ngx-datatable-column name="Temperatura" prop="temperatura"> </ngx-datatable-column>
+                    <ngx-datatable-column name="Eliminar" >
+                        <ng-template #buttonsTemplate let-row="row" let-value="value" ngx-datatable-cell-template>
+                            <!--<button style="background-color:red;height:15px;" 
+                            (click)='onDeleteCajon(row)'><i class="rb-ic rb-ic-add-frame"></i></button>-->
+                            <div 
+                                (click)="onDeleteCajon(row)"
+                            >
+                                <i data-feather="trash" class="cursor-pointer" [size]="24"></i>
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+                <ng-template #modalCajon let-modal>
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="myModalLabel160">Cajones</h5>
+                      <button type="button" class="close" (click)="cerrarModalCajon()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body" tabindex="0" ngbAutofocus>
+                        <section id="ngx-datatable-Responsive">
+                            <div class="row" style="padding-left: 20px;">
+                                <div class="d-flex justify-content-between align-items-center" style="250px">
+                                    <label class="d-flex align-items-center">Fecha Inicio
+                                        <input 
+                                            id="fechInicioCajon"
+                                            type="date"                      
+                                            class="form-control" 
+                                            (change)="capturarDateInicio($event)"
+                                            [(ngModel)]="fechInicioCajon"
+                                        >
+                                    </label>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <label class="d-flex align-items-center">Fecha Fin
+                                        <input 
+                                            id="fechFinCajon"
+                                            type="date"                      
+                                            class="form-control" 
+                                            (change)="capturarDateFin($event)"
+                                            [(ngModel)]="fechFinCajon"
+                                        >
+                                    </label> 
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <label class="d-flex align-items-center">Area
+                                        <select class="form-control" style="width: 250px"
+                                            [(ngModel)]="areaSelectedOption">
+                                            <option value="0"></option>
+                                            <option 
+                                                *ngFor="let item of cajonesHarina"
+                                                value={{item.id}}
+                                            >{{item.nombre}}
+                                            </option>
+                                        </select>
+                                    </label> 
+                                </div>
+                            </div>
+                            <div class="row" style="padding-left: 20px;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <button 
+                                        id="btnBuscarCajon"
+                                        class="btn  btn-primary stop" 
+                                        (click)="buscarCajon()"
+                                    >
+                                        Buscar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 10px;display: flex;
+                                flex-direction: row-reverse;padding-right: 20px;">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <button 
+                                        id="btnAggCajon"
+                                        class="btn  btn-primary stop"
+                                        (click)="aggCajon()" 
+                                    >
+                                        Agregar
+                                    </button>
+                                </div>
+                            </div> 
+                            <div class="row" style="margin-top: 10px;">
+                                <ngx-datatable 
+                                    [limit]="10"
+                                    [rowHeight]="65" 
+                                    [scrollbarH]="true"
+                                    [scrollbarW]="true"
+                                    [footerHeight]="50"
+                                    [rows]="cajonesArray"
+                                    style="width: 100%;" 
+                                    class="bootstrap core-bootstrap" 
+                                    [selected]="cajonesSeleccionados"
+                                    [columnMode]="ColumnMode.force"
+                                >
+                                    <ngx-datatable-column
+                                        [sortable]="false"
+                                        [canAutoResize]="false"
+                                        [draggable]="false"
+                                        [resizeable]="false"
+                                    >
+                                        <ng-template
+                                            let-value="value"
+                                            ngx-datatable-header-template
+                                        > 
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" 
+                                                    id="headerChkbxRef" 
+                                                    class="custom-control-input"
+                                                    [checked]="allSelectedRows"
+                                                    (change)="onCheckboxChangeAllRow($event,cajonesArray)"
+                                                />
+                                                <label class="custom-control-label" for="headerChkbxRef"></label>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template 
+                                            let-row="row"
+                                            let-value="value" 
+                                            let-rowIndex="rowIndex" 
+                                            ngx-datatable-cell-template 
+                                            let-isSelected="isSelected"
+                                        >
+                                            <div class="custom-control custom-checkbox">
+                                                <input 
+                                                    type="checkbox" 
+                                                    class="custom-control-input"
+                                                    [checked]="checkedCajonRow(row)"
+                                                    class="custom-control-input"
+                                                    id="rowChkbxRef{{ rowIndex }}" 
+                                                    (change)=onCheckboxChangeRow($event,row)
+                                                />
+                                                <label class="custom-control-label" for="rowChkbxRef{{rowIndex}}"></label>
+                                            </div>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="Número Cajon" prop="num_cajon"> </ngx-datatable-column>
+                                    <ngx-datatable-column name="Peso" prop="peso_sub_producto"> </ngx-datatable-column>
+                                    <ngx-datatable-column name="Temperatura" prop="temperatura"> </ngx-datatable-column>
+                                </ngx-datatable>
+                            </div>
+                        </section>
+                    </div>
+                </ng-template>
+            </ng-container>
+        </div>
+    </div>
+</div>

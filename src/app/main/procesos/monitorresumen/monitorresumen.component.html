@@ -1,0 +1,156 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <section id="ngx-datatable-kitchen-sink">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title" style="text-align: center"> Monitor de Producción </h4>
+            <div class="row">
+              <div class="col-4">
+                <div role="group" class="form-row">
+                    <div class="col-12">
+                        <label>Fecha Inicio</label>
+                    </div>
+                    <div class="col">
+                        <input id="txt_fecha" name="txt_fecha" type="date" value="todayWithPipe"
+                            class="form-control" [(ngModel)]="fechaInicio" (change)="funPresentarDatosAgrupadosFecha()">
+                    </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div role="group" class="form-row">
+                    <div class="col-12">
+                        <label>Fecha Fin</label>
+                    </div>
+                    <div class="col">
+                        <input id="txt_fecha" name="txt_fecha" type="date" value="todayWithPipe"
+                            class="form-control" [(ngModel)]="fechaFin" (change)="funPresentarDatosAgrupadosFecha()">
+                    </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div role="group" class="form-row">
+                  <div class="col-12">
+                    <label></label>
+                  </div>
+                  <div class="form-row form-group justify-content-center">
+                    <label class="d-flex align-items-center">Mostrar
+                      <select class="form-control mx-25" [(ngModel)]="basicSelectedOption">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                      </select>
+                      registros</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ngx-datatable 
+              [rows]="kitchenSinkRows" 
+              rowHeight="auto"
+              class="bootstrap core-bootstrap" 
+              [limit]="10"
+              [columnMode]="ColumnMode.force" 
+              [headerHeight]="50" 
+              [footerHeight]="50" 
+              [scrollbarH]="true"
+              [limit]="basicSelectedOption" 
+            >
+           
+              <ngx-datatable-column  id="proceso" name="Barco" prop="barco" [width]="200">
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  {{row.barco}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column  id="mandante" name="Not. Flota" prop="porc_no_flota" [width]="80">
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_no_flota >=0 && row.porc_no_flota < 70"> {{row.porc_no_flota}}%</span>
+                  <span class="badge badge-pill badge-light-warning mr-1" *ngIf="row.porc_no_flota >=70 && row.porc_no_flota < 90"> {{row.porc_no_flota}}%</span>
+                  <span class="badge badge-pill badge-light-success mr-1" *ngIf="row.porc_no_flota >=90 && row.porc_no_flota <=100 "> {{row.porc_no_flota}}%</span>
+                </ng-template>
+              </ngx-datatable-column>
+             
+              <ngx-datatable-column  id="mandante" name="E.M. Flota" prop="porc_em_flota" [width]="80">
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_em_flota >=0 && row.porc_em_flota < 70"> {{row.porc_em_flota}}%</span>
+                  <span class="badge badge-pill badge-light-warning mr-1" *ngIf="row.porc_em_flota >=70 && row.porc_em_flota < 90"> {{row.porc_em_flota}}%</span>
+                  <span class="badge badge-pill badge-light-success mr-1" *ngIf="row.porc_em_flota >=90 && row.porc_em_flota <=100 "> {{row.porc_em_flota}}%</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column  id="mandante" name="Tras. Flota" prop="porc_trp_flota" [width]="80" >
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_trp_flota >=0 && row.porc_trp_flota < 70"> {{row.porc_trp_flota}}%</span>
+                  <span class="badge badge-pill badge-light-warning mr-1" *ngIf="row.porc_trp_flota >=70 && row.porc_trp_flota < 90"> {{row.porc_trp_flota}}%</span>
+                  <span class="badge badge-pill badge-light-success mr-1" *ngIf="row.porc_trp_flota >=90 && row.porc_trp_flota <=100 "> {{row.porc_trp_flota}}%</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column  id="mandante" name="Crear O.C." prop="porc_orden_compra" [width]="80" >
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  <!-- <span>
+                    {{ value }} %
+                  </span> -->
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_orden_compra >=0 && row.porc_orden_compra < 70"> {{row.porc_orden_compra}}%</span>
+                  <span class="badge badge-pill badge-light-warning mr-1" *ngIf="row.porc_orden_compra >=70 && row.porc_orden_compra < 90"> {{row.porc_orden_compra}}%</span>
+                  <span class="badge badge-pill badge-light-success mr-1" *ngIf="row.porc_orden_compra >=90 && row.porc_orden_compra <=100 "> {{row.porc_orden_compra}}%</span>
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_orden_compra >100"> {{row.porc_orden_compra}}%</span>
+                </ng-template>
+              </ngx-datatable-column> 
+              <ngx-datatable-column  id="mandante" name="O.F. HALB" prop="porc_orden_halb" [width]="80">
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  <!-- <span>
+                    {{ value }} %
+                  </span> -->
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_orden_halb >=0 && row.porc_orden_halb < 70"> {{row.porc_orden_halb}}%</span>
+                  <span class="badge badge-pill badge-light-warning mr-1" *ngIf="row.porc_orden_halb >=70 && row.porc_orden_halb < 90"> {{row.porc_orden_halb}}%</span>
+                  <span class="badge badge-pill badge-light-success mr-1" *ngIf="row.porc_orden_halb >=90 && row.porc_orden_halb <=100 "> {{row.porc_orden_halb}}%</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column  id="mandante" name="O.F. FERT" prop="porc_orden_fert" [width]="80">
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_orden_fert >=0 && row.porc_orden_fert < 70"> {{row.porc_orden_fert}}%</span>
+                  <span class="badge badge-pill badge-light-warning mr-1" *ngIf="row.porc_orden_fert >=70 && row.porc_orden_fert < 90"> {{row.porc_orden_fert}}%</span>
+                  <span class="badge badge-pill badge-light-success mr-1" *ngIf="row.porc_orden_fert >=90 && row.porc_orden_fert <=100 "> {{row.porc_orden_fert}}%</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column  id="mandante" name="Act. O.C." prop="porc_orden_aoc" [width]="80">
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_orden_aoc >=0 && row.porc_orden_aoc < 70"> {{row.porc_orden_aoc}}%</span>
+                  <span class="badge badge-pill badge-light-warning mr-1" *ngIf="row.porc_orden_aoc >=70 && row.porc_orden_aoc < 90"> {{row.porc_orden_aoc}}%</span>
+                  <span class="badge badge-pill badge-light-success mr-1" *ngIf="row.porc_orden_aoc >=90 && row.porc_orden_aoc <=100 "> {{row.porc_orden_aoc}}%</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column  id="mandante" name="Not. HALB" prop="porc_orden_no_halb" [width]="80">
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_orden_no_halb >=0 && row.porc_orden_no_halb < 70"> {{row.porc_orden_no_halb}}%</span>
+                  <span class="badge badge-pill badge-light-warning mr-1" *ngIf="row.porc_orden_no_halb >=70 && row.porc_orden_no_halb < 90"> {{row.porc_orden_no_halb}}%</span>
+                  <span class="badge badge-pill badge-light-success mr-1" *ngIf="row.porc_orden_no_halb >=90 && row.porc_orden_no_halb <=100 "> {{row.porc_orden_no_halb}}%</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column  id="mandante" name="Not. FERT" prop="porc_orden_no_fert" [width]="80">
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_orden_no_fert >=0 && row.porc_orden_no_fert < 70"> {{row.porc_orden_no_fert}}%</span>
+                  <span class="badge badge-pill badge-light-warning mr-1" *ngIf="row.porc_orden_no_fert >=70 && row.porc_orden_no_fert < 90"> {{row.porc_orden_no_fert}}%</span>
+                  <span class="badge badge-pill badge-light-success mr-1" *ngIf="row.porc_orden_no_fert >=90 && row.porc_orden_no_fert <=100 "> {{row.porc_orden_no_fert}}%</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column  id="mandante" name="E.M. HALB" prop="porc_orden_em_halb" [width]="80">
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_orden_em_halb >=0 && row.porc_orden_em_halb < 70"> {{row.porc_orden_em_halb}}%</span>
+                  <span class="badge badge-pill badge-light-warning mr-1" *ngIf="row.porc_orden_em_halb >=70 && row.porc_orden_em_halb < 90"> {{row.porc_orden_em_halb}}%</span>
+                  <span class="badge badge-pill badge-light-success mr-1" *ngIf="row.porc_orden_em_halb >=90 && row.porc_orden_em_halb <=100 "> {{row.porc_orden_em_halb}}%</span>
+                </ng-template>
+              </ngx-datatable-column> 
+              <ngx-datatable-column  id="mandante" name="E.M. FERT" prop="porc_orden_em_fert" [width]="80">
+                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                  <span class="badge badge-pill badge-light-danger mr-1" *ngIf="row.porc_orden_em_fert >=0 && row.porc_orden_em_fert < 70"> {{row.porc_orden_em_fert}}%</span>
+                  <span class="badge badge-pill badge-light-warning mr-1" *ngIf="row.porc_orden_em_fert >=70 && row.porc_orden_em_fert < 90"> {{row.porc_orden_em_fert}}%</span>
+                  <span class="badge badge-pill badge-light-success mr-1" *ngIf="row.porc_orden_em_fert >=90 && row.porc_orden_em_fert <=100 "> {{row.porc_orden_em_fert}}%</span>
+                </ng-template>
+              </ngx-datatable-column>          
+            </ngx-datatable>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>

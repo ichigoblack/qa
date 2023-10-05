@@ -1,0 +1,19 @@
+::ng-deep.ng-select .ng-option.ng-option-selected.ng-option-marked {
+    background-color: #756ccf !important;
+    color: #fff !important;
+}
+::ng-deep.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label {
+    display: inline-block;
+    padding: 1px 5px;
+}
+::ng-deep.ng-select.ng-select-multiple .ng-value {
+    background-color: #7367f0 !important;
+    color: #fff;
+    border: none !important;
+    font-size: 0.8rem !important;
+    border-radius: 4px !important;
+    display: flex;
+    align-items: center;    
+    margin-right: 5px;
+    padding: 1px;
+}

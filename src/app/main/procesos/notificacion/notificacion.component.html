@@ -1,0 +1,284 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <section id="ngx-datatable-kitchen-sink">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title" style="text-align: center">{{titulo}}</h4>
+          <ng-container *ngIf="itemsNotificacion.length>0">
+            <app-notificacion-directiva [ads]="itemsNotificacion">
+            </app-notificacion-directiva>
+          </ng-container>
+          <br> 
+          <ng-container *ngIf="visibleTable">
+            <section id="ngx-datatable-Responsive">
+              <row>
+                <div class="row" style="margin-bottom: 5px;">
+                  <div class="col-md-10 col-12 d-flex" style="justify-content: space-between;">
+                    <label class="d-flex align-items-center">Buscar
+                      <input type="search" [(ngModel)]="buscar" 
+                        placeholder="Search" class="form-control ml-25" 
+                        (keyup)="filterUpdate($event)" (search)="filterUpdate($event)" />
+                    </label>
+                    <div class="col" style="display: flex;justify-content: flex-end;align-items: center;height: 90%;">
+                      <button 
+                        ngbTooltip="Notificar"
+                        (click)="notificar()"  
+                        class="btn btn-primary fa fa-send" 
+                        style="width: 30px;margin-right: 10px;display: flex;justify-content: center;"
+                      >
+                      </button>  
+                      <button 
+                        ngbTooltip="Limpiar"
+                        (click)="limpiar()"
+                        class="btn btn-primary fa fa-refresh" 
+                        style="width: 30px;display: flex;justify-content: center;"
+                      >
+                      </button> 
+                    </div>
+                  </div>
+                </div>
+              </row> 
+              <ngx-datatable 
+                [limit]="10"
+                [rowHeight]="58" 
+                [scrollbarH]="true"
+                [footerHeight]="50"
+                style="padding: 14px;"
+                [rows]="notificaciones" 
+                [columnMode]="ColumnMode.force"
+                class="bootstrap core-bootstrap" 
+                [selected]="cabecerasSeleccionadas"
+              >
+              <!--*ngFor="let col of camposCabecera; let i = index" [name]="col"-->
+                  
+                <ngx-datatable-column 
+                  *ngFor="let col of camposCabeceraSizes; let i = index" [name]="col.name" [width]="col.width"
+                >
+                  <ng-template ngx-datatable-header-template>
+                    {{ col.name }}
+                  </ng-template>
+                  <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                    <div *ngIf="!isArray(nameColumna(row,col.name))">
+                      {{ 
+                        nameColumna(row,col.name) 
+                      }}
+                    </div>
+                    <div *ngIf="isArray(nameColumna(row,col.name))">
+                      <div class="d-flex align-items-center col-actions">
+                        <!--modalOpenLG(modalLG,col,nameColumna(row,col.name))-->
+                        <div 
+                          (click)="modalOpenLGParcial(modalLG,col,nameColumna(row,col.name))"
+                          class="d-flex align-items-center"  
+                          style="color: rgb(109, 102, 90);" 
+                          ngbTooltip="Ver detalles"
+                        > 
+                          <i data-feather="eye" class="cursor-pointer" [size]="24"></i>
+                          <ng-template #modalLG let-modal>
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="myModalLabel160">{{titulo_detalle}}</h5>
+                              <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body" tabindex="0" ngbAutofocus>
+                              <ngx-datatable 
+                                [rows]="notificacion_detalle"  
+                                class="bootstrap core-bootstrap" 
+                                [limit]="10"
+                                [columnMode]="ColumnMode.force" 
+                                [headerHeight]="40" 
+                                [footerHeight]="50" 
+                                [scrollbarH]="true"
+                              >
+                                <ngx-datatable-column *ngFor="let cab of cabecera_detalle; let i = index" [name]="cab">
+                                    <ng-template ngx-datatable-header-template>
+                                      {{ cab }}
+                                    </ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template let-row="row">
+                                      {{ dataDetalle(cab,row)}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                              </ngx-datatable>
+                            </div>
+                          </ng-template>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+              <div class="row" style="margin-top: 5px;">
+                <!--<label class="d-flex align-items-center">Show
+                  <select class="form-control mx-25" [(ngModel)]="basicSelectedOption">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                </label>-->
+              </div>
+            </section>
+          </ng-container>
+
+          <ng-container *ngIf="visibleTableParcial">
+            <section id="ngx-datatable-Responsive">
+              <div class="row" style="margin-bottom: 5px;">
+                <div class="col-md-10 col-12 d-flex mt-1" style="justify-content: flex-start;">
+                  <label class="d-flex align-items-center">Buscar
+                  </label>
+                    <input type="search" [(ngModel)]="buscar"
+                      placeholder="Search" class="form-control"  style="max-width: 150px;"
+                      (keyup)="filterUpdate()" (search)="filterUpdate()" />
+                      <!--$event--> 
+                  <label class="d-flex align-items-center">Estado
+                    
+                  </label>
+                    <select class="form-control" [(ngModel)]="estadoSelectedOption" style="max-width: 150px;"
+                    (change)="changeEstado()">
+                      <option value="-1"></option>
+                      <option value="0" id="colorok">Enviado</option>
+                      <option value="1" id="colorer">Sin Enviar</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-12 d-flex mt-1" style="justify-content: flex-start;">
+                  <button 
+                      ngbTooltip="Notificar"
+                      (click)="notificar()"
+                      [disabled]="loading"
+                      class="btn btn-primary fa fa-send" 
+                      style="width: 30px;margin-right: 10px;display: flex;justify-content: center;"
+                    >
+                    </button>  
+                    <button 
+                      ngbTooltip="Limpiar"
+                      (click)="limpiar()"  
+                      class="btn btn-primary fa fa-refresh" 
+                      style="width: 30px;display: flex;justify-content: center;"
+                    >
+                    </button> 
+                </div>
+              </div>
+              <ngx-datatable 
+                [limit]="10"
+                [rowHeight]="65" 
+                [scrollbarH]="true"
+                [scrollbarW]="true"
+                [footerHeight]="50"
+                [rows]="notificaciones" 
+                class="bootstrap core-bootstrap" 
+                [selected]="cabecerasSeleccionadas"
+                style="margin-top: 2px;"
+              >
+                <ngx-datatable-column
+                  [width] = "50"
+                  [sortable]="false"
+                  [canAutoResize]="false"
+                  [draggable]="false"
+                  [resizeable]="false"
+                >
+                  <ng-template
+                    let-value="value"
+                    ngx-datatable-header-template
+                  > 
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" 
+                        id="headerChkbxRef" 
+                        class="custom-control-input"
+                        [checked]="allSelectedRows"
+                        (change)="onCheckboxChangeAllRow($event,notificaciones)"
+                      />
+                      <label class="custom-control-label" for="headerChkbxRef"></label>
+                    </div>
+                  </ng-template>
+                  <ng-template 
+                    let-row="row"
+                    let-value="value" 
+                    let-rowIndex="rowIndex" 
+                    ngx-datatable-cell-template 
+                    let-isSelected="isSelected"
+                  >
+                    <div class="custom-control custom-checkbox">
+                      <input 
+                        type="checkbox" 
+                        [checked]="checkedRow(row)"
+                        class="custom-control-input"
+                        [disabled]="disabledRow(row)"
+                        id="rowChkbxRef{{ rowIndex }}" 
+                        (change)=onCheckboxChangeRow($event,row)
+                      />
+                      <label class="custom-control-label" for="rowChkbxRef{{rowIndex}}"></label>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column 
+                  *ngFor="let col of camposCabeceraSizes; let i = index" [name]="col.name" [width]="col.width"
+                >
+                  <ng-template ngx-datatable-header-template>
+                    {{ col.name }}
+                  </ng-template>
+                  <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                    <div *ngIf="!isArray(nameColumna(row,col.name))">
+                      {{ 
+                        nameColumna(row,col.name) 
+                      }}
+                    </div>
+                    <div *ngIf="isArray(nameColumna(row,col.name))">
+                      <div class="d-flex align-items-center col-actions">
+                        <div 
+                          (click)="modalOpenLGParcial(modalLG,col,nameColumna(row,col.name))"
+                          class="d-flex align-items-center" 
+                          style="color: rgb(109, 102, 90);" 
+                          ngbTooltip="Ver detalles"
+                        >
+                          <i data-feather="eye" class="cursor-pointer" [size]="24"></i>
+                          <ng-template #modalLG let-modal>
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="myModalLabel160">{{titulo_detalle}}</h5>
+                              <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body" tabindex="0" ngbAutofocus>
+                              <ngx-datatable 
+                                [rows]="notificacion_detalle"  
+                                class="bootstrap core-bootstrap" 
+                                [limit]="10"
+                                [columnMode]="ColumnMode.force" 
+                                [headerHeight]="40" 
+                                [footerHeight]="50" 
+                                [scrollbarH]="true"
+                              >
+                                <ngx-datatable-column *ngFor="let cab of cabecera_detalle; let i = index" [name]="cab">
+                                    <ng-template ngx-datatable-header-template>
+                                      {{ cab }}
+                                    </ng-template>
+                                    <ng-template let-value="value" ngx-datatable-cell-template let-row="row">
+                                      {{ dataDetalle(cab,row)}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                              </ngx-datatable>
+                            </div>
+                          </ng-template>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+              <div class="row" style="margin-top: 5px;">
+                <!--<label class="d-flex align-items-center">Show
+                  <select class="form-control mx-25" [(ngModel)]="basicSelectedOption">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                </label>-->
+              </div>
+            </section>
+          </ng-container>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+@import '@core/scss/angular/libs/datatables.component.scss';
+
+.datatable-scroll {
+  width: auto !important;
+}
+
+.ngx-datatable.bootstrap.core-bootstrap .datatable-header .datatable-header-cell-template-wrap {
+  display: flex;
+  align-items: center;
+  letter-spacing: 1px;
+  justify-content: center;
+  font-size: 8px;
+}
+
+.ngx-datatable.fixed-row .datatable-scroll .datatable-body-row .datatable-body-cell, .ngx-datatable.fixed-row .datatable-scroll .datatable-body-row .datatable-body-group-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  justify-content: center;
+}
+

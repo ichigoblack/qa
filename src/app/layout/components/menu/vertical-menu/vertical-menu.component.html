@@ -1,0 +1,15 @@
+<div class="navbar-header expanded">
+  <ul class="nav navbar-nav flex-row">
+    <li class="nav-item mr-auto">
+      <a [routerLink]="['/']">
+        <img style="margin-top: 3px; padding-right: 55px;" src="assets/images/logo/logo_interno.png" width="120%" height="210%"/>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="shadow-bottom" [ngClass]="{ 'd-block': isScrolled }"></div>
+
+<div class="main-menu-content" [perfectScrollbar] (scroll)="onSidebarScroll()">
+  <ul class="navigation navigation-main" layout="vertical" core-menu></ul>
+</div>

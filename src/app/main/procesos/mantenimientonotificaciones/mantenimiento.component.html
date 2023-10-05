@@ -1,0 +1,121 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <section id="ngx-datatable-kitchen-sink">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title" style="text-align: center">Mantenimiento de Integraciones</h4>
+            <div class="row col-md-12 col-12">
+              <div class="col-md-4 col-4">
+                <label class="mr-1" style="width: 60%;">Fecha de Registro</label>
+                <input 
+                    type="date"
+                    id="txt_fecha"                       
+                    class="form-control" 
+                    style="width: 60%;"
+                    [ngModel]='fecha | date:"yyyy-MM-dd" ' 
+                    (change)="changeFecha($event)"
+                >
+              </div>
+              <div class="col-md-4 col-3">
+                <label class="mr-1" style="width: 80%;">Tipo de Integración</label>
+                  <select 
+                    class="form-control" 
+                    [(ngModel)]="tipoIntegracion"  
+                    (change)="changeTipoIntegracion()"
+                  >
+                  <option></option>
+                  <option 
+                      *ngFor="let item of listaTipoIntegracion"
+                      value={{item.codintegracion}}
+                  >{{item.descripcion}}
+                  </option>
+                
+                </select>
+                      
+              </div>
+              <div class="col-md-4 col-3">
+                <label class="mr-1" style="width: 20%;"></label>
+                <button class="form-control btn  btn-primary stop"
+                  (click)="cargarIntegraciones(true)"
+                  [class.spinner]="loading"
+                >
+                  Buscar
+                </button>
+              </div>
+              <div class="col-md-4 col-3"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="d-flex justify-content-between align-items-center m-1">
+                  <label class="d-flex align-items-center">Show
+                    <select class="form-control mx-25" [(ngModel)]="basicSelectedOption">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                    entries</label>
+                </div>
+              </div>
+              <div class="col-md-6 col-12 d-flex justify-content-md-end">
+                <div class="d-flex align-items-center justify-content-end pr-1 pb-1 pl-1 pl-md-0 pb-md-0">
+                  <label class="d-flex align-items-center">Buscar<input type="search" placeholder="Buscar.."
+                      class="form-control ml-25" (keyup)="busqueda($event)" /></label>
+                </div>
+              </div>
+            </div>
+        
+            <ngx-datatable
+              *ngIf="mostrarTabla" 
+              [rows]="kitchenSinkRows" 
+              [rowHeight]="58" 
+              class="bootstrap core-bootstrap mt-1" 
+              [limit]="10"
+              [columnMode]="ColumnMode.force" 
+              [headerHeight]="40" 
+              [footerHeight]="50" 
+              [scrollbarH]="true"
+              [limit]="basicSelectedOption" 
+            >
+
+            <ngx-datatable-column
+              *ngFor="let item of columnas"
+                [name]="item.name" 
+                [prop]="item.prop" 
+                >
+                <ng-template 
+                    let-row="row" 
+                    let-name="value" 
+                    ngx-datatable-cell-template>
+                  <div *ngIf="item.prop == 'id'">
+                    <div *ngIf="row.estado==0">
+                      <button
+                        class = "form-control btn btn-outline-warning"
+                        (click)="anular(row[item.prop])"
+                      >
+                        Anular
+                      </button>
+
+                    </div>
+                    <div *ngIf="row.estado==1">
+                      <button
+                        class = "form-control btn btn-outline-secondary "
+                        (click)="reversarAnulacion(row[item.prop])"
+                      >
+                        Rev. Anulación
+                      </button>
+
+                    </div>
+
+                  </div>
+                  <div *ngIf="item.prop != 'id' ">
+                    {{row[item.prop]}}
+                  </div>
+                </ng-template>
+            </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>

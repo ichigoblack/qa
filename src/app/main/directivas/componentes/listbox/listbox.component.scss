@@ -1,0 +1,29 @@
+@import "~@ng-select/ng-select/themes/material.theme.css";
+
+::ng-deep.ng-dropdown-panel .ng-dropdown-panel-items{
+    margin-top: 11px;
+    margin-right: 12px;
+    box-sizing: border-box;
+    display: block;
+    height: auto;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+::ng-deep.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    padding-left: 10px;
+    background-color: rgb(255, 255, 255);
+}
+
+::ng-deep.ng-dropdown-panel .scroll-host {
+    -webkit-overflow-scrolling: touch;
+    display: block;
+    overflow: hidden;
+    overflow-y: auto;
+    position: relative;
+    margin-left: -14px;
+    border: 1px solid #b4b7bd;
+}

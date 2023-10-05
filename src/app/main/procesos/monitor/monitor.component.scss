@@ -1,0 +1,41 @@
+@import '@core/scss/angular/libs/datatables.component.scss';
+
+.datatable-scroll {
+  width: auto !important;
+}
+
+.ngx-datatable.bootstrap.core-bootstrap .datatable-header .datatable-header-cell-template-wrap {
+  display: flex;
+  align-items: center;
+  letter-spacing: 1px;
+  justify-content: center;
+}
+
+.ngx-datatable.fixed-row .datatable-scroll .datatable-body-row .datatable-body-cell, .ngx-datatable.fixed-row .datatable-scroll .datatable-body-row .datatable-body-group-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  justify-content: center;
+}
+
+.ngx-datatable .datatable-header .datatable-header-cell .sort-btn {
+  //cursor: pointer;
+  //display: inline-block;
+  //line-height: 100%;
+  //vertical-align: middle;
+  display: none !important;
+}
+
+#colorok {
+  color: rgb(40, 197, 67);
+}
+#colorer {
+  color: rgb(218, 57, 71);
+}
+#colorpr {
+  color:#ff9f43;
+}
+
+.text-justify {
+  text-align: justify; /* Esto justificará el texto en las celdas de la columna */
+}

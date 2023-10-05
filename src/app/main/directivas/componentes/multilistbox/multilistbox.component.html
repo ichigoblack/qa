@@ -1,0 +1,23 @@
+<ng-template [ngIf]="visible">
+    <div class={{clases}} style={{estilosPrincial}} >
+        <label  style={{estilosLabel}}>{{nombre}}</label>
+        <ng-select
+            id={{id}} 
+            placeholder=""
+            [multiple]="true"
+            class="form-control"
+            [searchable]="false"
+            [items]="listaElement"
+            bindLabel="descripcion"
+            [closeOnSelect]="false"
+            (change)="capturar(id)"
+            style={{estilosComponente}}
+            [(ngModel)]="selectMultiSelected"
+        >
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+                <span class="ng-value-label"> {{ item.descripcion }}</span>
+                <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+            </ng-template>
+        </ng-select>
+    </div>
+</ng-template>

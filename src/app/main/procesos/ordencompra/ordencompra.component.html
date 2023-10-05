@@ -1,0 +1,11 @@
+<div class="content-body">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title" style="text-align: center"> {{titulo}}</h4>
+            <ng-container *ngIf="info.length>0">
+                <app-orden-compra-directiva [ads]="info">
+                </app-orden-compra-directiva>
+            </ng-container>
+        </div>
+    </div>
+</div>

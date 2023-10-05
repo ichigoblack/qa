@@ -1,0 +1,15 @@
+<ng-template [ngIf]="visible">
+    <div class={{clases}} style={{estilosPrincial}}>
+        <br>
+        <button 
+            id={{id}}
+            [disabled]="loading"
+            (click)="proceso(id)"
+            [class.spinner]="loading"
+            style={{estilosComponente}} 
+            class="btn  btn-primary stop" 
+        >
+            {{nombre}}
+        </button>
+    </div>
+</ng-template>
